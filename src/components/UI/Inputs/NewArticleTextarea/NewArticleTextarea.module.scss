@@ -1,0 +1,37 @@
+.elem {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.elem__label {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px;
+    color: #262626;
+}
+
+.elem__textarea {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: rgba(0, 0, 0, 0.75);
+    padding: 8px 12px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    resize: none;
+    height: 168px;
+}
+.elem__textarea:focus {
+    border: 1px solid rgba(0, 0, 0, 0.75);
+}
+.elem__textarea:focus-visible {
+    border: 1px solid rgba(0, 0, 0, 0.75);
+}
+
+.input_err {
+    border: 1px solid #f5222d;
+}

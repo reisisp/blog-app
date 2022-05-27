@@ -1,0 +1,26 @@
+.modal {
+    width: 204px;
+    height: 80px;
+    background-color: #fff;
+    filter: drop-shadow(0px 2px 8px rgba(0, 0, 0, 0.15));
+    position: absolute;
+    padding: 12px 16px;
+    border-radius: 6px;
+    left: 85px;
+}
+
+.modal__text {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px;
+    color: #595959;
+}
+
+.modal__btns {
+    margin-top: 26px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px
+}

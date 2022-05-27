@@ -1,0 +1,28 @@
+.profile {
+    display: grid;
+    grid-template-columns: 112px minmax(100px, max-content) 100px;
+    align-items: center;
+    grid-gap: 27px;
+}
+
+.profile__main {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.profile__name {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 28px;
+    color: rgba(0, 0, 0, 0.85);
+}
+
+.profile__img {
+    width: 46px;
+    height: 46px;
+    object-fit: cover;
+    border-radius: 50%;
+}

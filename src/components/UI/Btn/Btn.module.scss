@@ -1,0 +1,195 @@
+@mixin btn() {
+    background: inherit;
+    border-radius: 4px;
+    cursor: pointer;
+}
+@mixin btnText {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.btn {
+    @include btn;
+    border: 1px solid #1890ff;
+    padding: 7px 39px;
+    & span {
+        @include btnText;
+        color: #1890ff;
+    }
+    &:hover span {
+        color: #fff;
+    }
+    &:hover {
+        background-color: #1890ff;
+    }
+    &:active {
+        opacity: 0.8;
+    }
+}
+
+.confirmModalBtn {
+    @include btn;
+    border: 1px solid #1890ff;
+    padding: 0 8px;
+    & span {
+        @include btnText;
+        color: #1890ff;
+    }
+    &:hover span {
+        color: #fff;
+    }
+    &:hover {
+        background-color: #1890ff;
+    }
+    &:active {
+        opacity: 0.8;
+    }
+}
+
+.deleteArticlebtn {
+    @include btn;
+    border: 1px solid #f5222d;
+    padding: 6px 17px;
+    & span {
+        @include btnText;
+        color: #f5222d;
+    }
+    &:hover span {
+        color: #fff;
+    }
+    &:hover {
+        background-color: #f5222d;
+    }
+    &:active {
+        opacity: 0.8;
+    }
+}
+
+.editArticlebtn {
+    @include btn;
+    border: 1px solid #52c41a;
+    padding: 6px 19px;
+    & span {
+        @include btnText;
+        color: #52c41a;
+    }
+    &:hover span {
+        color: #fff;
+    }
+    &:hover {
+        background-color: #52c41a;
+    }
+    &:active {
+        opacity: 0.8;
+    }
+}
+
+.signUpBtn {
+    @include btn;
+    padding: 7px 20px;
+    border: 1px solid #52c41a;
+    & span {
+        @include btnText;
+        font-family: "Inter";
+        font-size: 18px;
+        line-height: 28px;
+        color: #52c41a;
+    }
+    &:hover {
+        box-shadow: 5px 3px 3px rgba(0, 0, 0, 0.35);
+    }
+}
+
+.signInBtn {
+    @include btn;
+    padding: 7px 20px;
+    border: 1px solid transparent;
+    & span {
+        @include btnText;
+        font-family: "Inter";
+        font-size: 18px;
+        line-height: 28px;
+        color: rgba(0, 0, 0, 0.85);
+    }
+    &:hover {
+        box-shadow: 5px 3px 3px rgba(0, 0, 0, 0.35);
+    }
+}
+
+.logoutBtn {
+    @include btn;
+    padding: 8px 13px;
+    border: 1px solid rgba(0, 0, 0, 0.75);
+    &:hover {
+        box-shadow: 5px 3px 3px rgba(0, 0, 0, 0.35);
+    }
+    & span {
+        @include btnText;
+        font-family: "Inter";
+        font-size: 18px;
+        line-height: 28px;
+        color: rgba(0, 0, 0, 0.75);
+    }
+}
+
+.createArticleBtn {
+    @include btn;
+    padding: 3px 10px;
+    border: 1px solid #52c41a;
+    background: #fff;
+    text-align: center;
+    &:hover {
+        background: #52c41a;
+        & span {
+            color: #fff;
+        }
+    }
+    &:active {
+        opacity: 0.8;
+    }
+    & span {
+        @include btnText;
+        font-family: "Inter";
+        font-size: 14px;
+        line-height: 22px;
+        color: #52c41a;
+    }
+}
+
+.confirmBtn {
+    @include btn;
+    background: #1890ff;
+    padding: 8px 141px;
+    & span {
+        @include btnText;
+        color: #ffffff;
+    }
+    &:hover {
+        box-shadow: 5px 3px 3px rgba(0, 0, 0, 0.35);
+    }
+    &:active {
+        opacity: 0.9;
+    }
+}
+
+.deleteBtn {
+    @include btn;
+    border: 1px solid #f5222d;
+    padding: 7px 32px;
+    & span {
+        @include btnText;
+        color: #f5222d;
+    }
+    &:hover {
+        background-color: #f5222d;
+    }
+    &:hover span {
+        color: #fff;
+    }
+    &:active {
+        opacity: 0.8;
+    }
+}

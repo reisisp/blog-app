@@ -1,0 +1,91 @@
+.article {
+    width: 100%;
+    position: relative;
+}
+
+.article__btns {
+    position: absolute;
+    right: 0;  
+    display: flex;
+    gap: 10px;
+}
+
+.card {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    gap: 85px;
+}
+
+.card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 300px;
+}
+
+.card__head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.card__heading {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 28px;
+    color: #1890ff;
+}
+
+.card__tags {
+    display: flex;
+    gap: 8px;
+}
+
+.card__desc {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 22px;
+    color: rgba(0, 0, 0, 0.75);
+}
+
+.card__user {
+    position: relative;
+    display: flex;
+    gap: 12px;
+}
+
+.user__info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.user__name {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 28px;
+    color: rgba(0, 0, 0, 0.85);
+}
+
+.user__date {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 22px;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.user__img {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    object-fit: cover;
+}

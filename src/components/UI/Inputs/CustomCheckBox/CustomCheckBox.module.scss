@@ -1,0 +1,63 @@
+.elem {
+    position: relative;
+    padding: 0 0 21px 0;
+    &__label {
+        display: flex;
+        width: 100%;
+        gap: 8px;
+    }
+    &__checkbox {
+        position: absolute;
+        z-index: -1;
+        opacity: 0;
+        & + .elem__label {
+            user-select: none;
+            cursor: pointer;
+            &::before {
+                position: relative;
+                top: 2px;
+                content: "";
+                display: inline-block;
+                border: 1px solid #d9d9d9;
+                cursor: pointer;
+                width: 15px;
+                height: 15px;
+                border-radius: 2px;
+            }
+            &:hover::before {
+                border: 1px solid #1890ff;
+            }
+        }
+        &:checked + .elem__label::before {
+            width: 15px;
+            height: 15px;
+            border: 1px solid #1890ff;
+            background-color: #1890ff;
+        }
+        &:checked + .elem__label::after {
+            content: "";
+            position: absolute;
+            top: 4px;
+            left: 6px;
+            display: inline-block;
+            transform: rotate(45deg);
+            height: 8px;
+            width: 3px;
+            border-bottom: 2px solid #fff;
+            border-right: 2px solid #fff;
+        }
+    }
+}
+
+.elem__label span {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px;
+    color: #595959;
+}
+
+.elem__err.elem__label::before {
+    border: 1px solid #f5222d;
+}
