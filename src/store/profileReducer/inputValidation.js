@@ -1,4 +1,4 @@
-import { AUTH_SET_VALIDATION_ERR, PROFILE_EDIT_SET_VALIDATION_ERR, REGISTER_SET_VALIDATION_ERR } from '../reduxTypes';
+import { PROFILE_SET_VALIDATION_ERR } from '../reduxTypes';
 
 export function checkProfileEditData(user) {
   return (dispatch) => {
@@ -12,13 +12,13 @@ export function checkProfileEditData(user) {
       !checkUsername(user.username) ||
       !checkImg(user.image);
     if (check) {
-      validateUserName(user.username, dispatch, PROFILE_EDIT_SET_VALIDATION_ERR);
-      validateEmail(user.email, dispatch, PROFILE_EDIT_SET_VALIDATION_ERR);
-      validatePwd(user.password, dispatch, PROFILE_EDIT_SET_VALIDATION_ERR);
-      validateImg(user.image, dispatch, PROFILE_EDIT_SET_VALIDATION_ERR);
+      validateUserName(user.username, dispatch, PROFILE_SET_VALIDATION_ERR);
+      validateEmail(user.email, dispatch, PROFILE_SET_VALIDATION_ERR);
+      validatePwd(user.password, dispatch, PROFILE_SET_VALIDATION_ERR);
+      validateImg(user.image, dispatch, PROFILE_SET_VALIDATION_ERR);
     } else {
       dispatch({
-        type: PROFILE_EDIT_SET_VALIDATION_ERR,
+        type: PROFILE_SET_VALIDATION_ERR,
         payload: { username: '', email: '', password: '', image: '' },
       });
     }
@@ -39,18 +39,18 @@ export function checkRegisterData(user) {
       !user.agreementCheckbox ||
       user.password !== user.repeatPwd;
     if (check) {
-      validateUserName(user.username, dispatch, REGISTER_SET_VALIDATION_ERR);
-      validateEmail(user.email, dispatch, REGISTER_SET_VALIDATION_ERR);
-      validatePwd(user.password, dispatch, REGISTER_SET_VALIDATION_ERR);
-      validateRepeatPwd(user.repeatPwd, dispatch, REGISTER_SET_VALIDATION_ERR);
-      validateCheckBox(user.agreementCheckbox, dispatch, REGISTER_SET_VALIDATION_ERR);
+      validateUserName(user.username, dispatch, PROFILE_SET_VALIDATION_ERR);
+      validateEmail(user.email, dispatch, PROFILE_SET_VALIDATION_ERR);
+      validatePwd(user.password, dispatch, PROFILE_SET_VALIDATION_ERR);
+      validateRepeatPwd(user.repeatPwd, dispatch, PROFILE_SET_VALIDATION_ERR);
+      validateCheckBox(user.agreementCheckbox, dispatch, PROFILE_SET_VALIDATION_ERR);
       if (user.password !== user.repeatPwd) {
-        dispatch({ type: REGISTER_SET_VALIDATION_ERR, payload: { password: 'Passwords must match' } });
-        dispatch({ type: REGISTER_SET_VALIDATION_ERR, payload: { repeatPwd: 'Passwords must match' } });
+        dispatch({ type: PROFILE_SET_VALIDATION_ERR, payload: { password: 'Passwords must match' } });
+        dispatch({ type: PROFILE_SET_VALIDATION_ERR, payload: { repeatPwd: 'Passwords must match' } });
       }
     } else {
       dispatch({
-        type: REGISTER_SET_VALIDATION_ERR,
+        type: PROFILE_SET_VALIDATION_ERR,
         payload: { username: '', email: '', password: '', repeatPwd: '', agreementCheckbox: '' },
       });
     }
@@ -60,12 +60,12 @@ export function checkAuthData(user) {
   return (dispatch) => {
     const check = !user.email || !checkEmail(user.email) || !user.password || !checkPwd(user.password);
     if (check) {
-      validateEmail(user.email, dispatch, AUTH_SET_VALIDATION_ERR);
-      validatePwd(user.password, dispatch, AUTH_SET_VALIDATION_ERR);
+      validateEmail(user.email, dispatch, PROFILE_SET_VALIDATION_ERR);
+      validatePwd(user.password, dispatch, PROFILE_SET_VALIDATION_ERR);
     } else {
       dispatch({
-        type: AUTH_SET_VALIDATION_ERR,
-        payload: { email: '', password: '' },
+        type: PROFILE_SET_VALIDATION_ERR,
+        payload: { username: '', email: '' },
       });
     }
   };

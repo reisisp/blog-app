@@ -8,7 +8,7 @@ import HeaderProfile from '../HeaderProfile/HeaderProfile';
 
 import classes from './Header.module.scss';
 
-const Header = ({ token, registerClearForm, authClearForm, profileGetUserByToken }) => {
+const Header = ({ token, profileGetUserByToken }) => {
   useEffect(() => {
     if (token) {
       localStorage.setItem('token', token);
@@ -28,10 +28,10 @@ const Header = ({ token, registerClearForm, authClearForm, profileGetUserByToken
       <div className={classes.header__btns}>
         {!token ? (
           <>
-            <Btn to="/sign-in" onClick={authClearForm} signInBtn>
+            <Btn to="/sign-in" signInBtn>
               Sign&nbsp;In
             </Btn>
-            <Btn to="/sign-up" onClick={registerClearForm} signUpBtn>
+            <Btn to="/sign-up" signUpBtn>
               Sign&nbsp;Up
             </Btn>
           </>

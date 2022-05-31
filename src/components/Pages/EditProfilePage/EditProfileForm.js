@@ -8,10 +8,18 @@ import { Btn } from '../../UI/Btn/Btn';
 
 import classes from './EditProfileForm.module.scss';
 
-const EditProfileForm = ({ user, validationErrors, profileEditSetUser, saveEditedUser, token }) => {
+const EditProfileForm = ({
+  user,
+  validationErrors,
+  profileEditSetUser,
+  saveEditedUser,
+  token,
+  profilePrepareEditPage,
+}) => {
   const history = useHistory();
   useEffect(() => {
     if (!token) history.push('/');
+    if (token) profilePrepareEditPage();
   }, [token]);
 
   const validInputs = [
@@ -79,7 +87,7 @@ function mapStateToProps({ profileReducer }) {
   return {
     token: profileReducer.token,
     user: profileReducer.editProfileUser,
-    validationErrors: profileReducer.editProfileValidationErrors,
+    validationErrors: profileReducer.validationErrors,
   };
 }
 

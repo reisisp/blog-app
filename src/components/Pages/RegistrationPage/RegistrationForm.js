@@ -11,17 +11,20 @@ import classes from './RegistrationForm.module.scss';
 
 const RegistrationForm = ({
   token,
+  user,
+  validationErrors,
+  registerPreparePage,
   registerSetUser,
   registerSetAgreementCheckbox,
   registerNewUser,
-  authClearForm,
-  user,
-  validationErrors,
 }) => {
   const history = useHistory();
   useEffect(() => {
     if (token) history.push('/');
   }, [token]);
+  useEffect(() => {
+    registerPreparePage();
+  }, []);
   const inputs = [
     {
       err: validationErrors.username,
@@ -88,7 +91,7 @@ const RegistrationForm = ({
         </Btn>
         <p className={classes.signin}>
           <span className={classes.signin__heading}>Already have an account?</span>&nbsp;
-          <Link to="/sign-in" onClick={authClearForm}>
+          <Link to="/sign-in">
             <span className={classes.signin__btn}>Sign&nbsp;In.</span>
           </Link>
         </p>
@@ -101,7 +104,7 @@ function mapStateToProps({ profileReducer }) {
   return {
     token: profileReducer.token,
     user: profileReducer.newUser,
-    validationErrors: profileReducer.newUserValidationErrors,
+    validationErrors: profileReducer.validationErrors,
   };
 }
 

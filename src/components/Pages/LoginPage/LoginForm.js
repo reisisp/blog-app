@@ -8,12 +8,14 @@ import { Btn } from '../../UI/Btn/Btn';
 
 import classes from './LoginForm.module.scss';
 
-const LoginForm = ({ token, authSetUser, authUser, registerClearForm, user, validationErrors }) => {
+const LoginForm = ({ token, user, validationErrors, authSetUser, authUser, authPreparePage }) => {
   const history = useHistory();
   useEffect(() => {
     if (token) history.push('/');
   }, [token]);
-
+  useEffect(() => {
+    authPreparePage();
+  }, []);
   const validInputs = [
     {
       err: validationErrors.email,
@@ -55,7 +57,7 @@ const LoginForm = ({ token, authSetUser, authUser, registerClearForm, user, vali
         </Btn>
         <p className={classes.signup}>
           <span className={classes.singup__heading}>Don`t have an account?</span>&nbsp;
-          <Link to="/sign-up" onClick={registerClearForm}>
+          <Link to="/sign-up">
             <span className={classes.signup__btn}>Sign&nbsp;Up.</span>
           </Link>
         </p>
@@ -68,7 +70,7 @@ function mapStateToProps({ profileReducer }) {
   return {
     token: profileReducer.token,
     user: profileReducer.authUser,
-    validationErrors: profileReducer.authUserValidationErrors,
+    validationErrors: profileReducer.validationErrors,
   };
 }
 
