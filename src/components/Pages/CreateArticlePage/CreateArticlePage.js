@@ -9,17 +9,17 @@ import { withLoadingAndErrors } from '../../../hoc/withLoadingAndErrors/withLoad
 
 const CreateArticlePage = withContainer(
   withLoadingAndErrors(
-    ({ createArticle, token, article, newArticleClearForm, slug }) => {
+    ({ token, article, slug, newArticlePreparePage, createArticle }) => {
       const history = useHistory();
       useEffect(() => {
-        newArticleClearForm();
+        newArticlePreparePage();
       }, []);
       useEffect(() => {
         if (!token) history.push('/');
       }, [token]);
       useEffect(() => {
         if (slug) history.push(`/articles/${slug}`);
-        newArticleClearForm();
+        newArticlePreparePage();
       }, [slug]);
       return <CreateEditArticlePageForm formAction={() => createArticle(token, article)} edit={false} />;
     },
@@ -32,8 +32,8 @@ const CreateArticlePage = withContainer(
 function mapStateToProps({ articlesReducer, profileReducer }) {
   return {
     token: profileReducer.token,
-    slug: articlesReducer.newArticleSlug,
     article: articlesReducer.newArticle,
+    slug: articlesReducer.newArticleSlug,
     loading: articlesReducer.loader,
     err: articlesReducer.connectionError,
   };

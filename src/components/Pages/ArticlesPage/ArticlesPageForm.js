@@ -11,6 +11,7 @@ const ArticlesPageForm = ({ token, articles, getArticles, currentPage }) => {
   useEffect(() => {
     getArticles(currentPage, token);
   }, [currentPage]);
+
   return (
     <section className={classes.cardList}>
       {articles.map((article) => (

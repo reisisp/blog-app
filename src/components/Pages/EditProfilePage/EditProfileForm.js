@@ -9,11 +9,11 @@ import { Btn } from '../../UI/Btn/Btn';
 import classes from './EditProfileForm.module.scss';
 
 const EditProfileForm = ({
+  token,
   user,
   validationErrors,
   profileEditSetUser,
   saveEditedUser,
-  token,
   profilePrepareEditPage,
 }) => {
   const history = useHistory();

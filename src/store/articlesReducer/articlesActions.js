@@ -6,9 +6,9 @@ import {
   ARTICLES_ARTICLE_UPDATE_ARTICLE,
   ARTICLES_CLEAR_ARTICLES,
   ARTICLES_NEW_ARTICLE_ADD_TAG,
-  ARTICLES_NEW_ARTICLE_CLEAR_FORM,
   ARTICLES_NEW_ARTICLE_DELETE_TAG,
   ARTICLES_NEW_ARTICLE_EDIT_TAG,
+  ARTICLES_NEW_ARTICLE_PREPARE_PAGE,
   ARTICLES_NEW_ARTICLE_SET_ARTICLE,
   ARTICLES_NEW_ARTICLE_SET_NEW_TAG,
   ARTICLES_NEW_ARTICLE_SET_SLUG,
@@ -23,31 +23,13 @@ import { checkData } from './inputValidation';
 
 const service = new BlogService();
 
-export function getArticles(page, token) {
-  return (dispatch) => {
-    dispatch(showLoader());
-    dispatch({ type: ARTICLES_CLEAR_ARTICLES });
-    service
-      .getArticlesByPage(page, token)
-      .then((res) => {
-        dispatch({ type: ARTICLES_SAVE_TOTAL_PAGES, payload: res.articlesCount });
-        dispatch(saveArticles(res.articles));
-        dispatch(showLoader(false));
-      })
-      .catch(() => {
-        dispatch(showConnectionError());
-        dispatch(showLoader(false));
-      });
-  };
-}
-
-export function getArticleBySlug(slug, token) {
+export function updateArticle(slug, article, token) {
   return (dispatch) => {
     dispatch(showLoader());
     service
-      .getArticleBySlug(slug, token)
-      .then((res) => {
-        dispatch(saveArticle(res.article));
+      .updateArticle(slug, article, token)
+      .then(() => {
+        dispatch(editConfirmation(true));
         dispatch(showLoader(false));
       })
       .catch(() => {
@@ -94,13 +76,31 @@ export function deleteArticle(token, slug) {
   };
 }
 
-export function updateArticle(slug, article, token) {
+export function getArticleBySlug(slug, token) {
   return (dispatch) => {
     dispatch(showLoader());
     service
-      .updateArticle(slug, article, token)
-      .then(() => {
-        dispatch(editConfirmation(true));
+      .getArticleBySlug(slug, token)
+      .then((res) => {
+        dispatch(saveArticle(res.article));
+        dispatch(showLoader(false));
+      })
+      .catch(() => {
+        dispatch(showConnectionError());
+        dispatch(showLoader(false));
+      });
+  };
+}
+
+export function getArticles(page, token) {
+  return (dispatch) => {
+    dispatch(showLoader());
+    dispatch({ type: ARTICLES_CLEAR_ARTICLES });
+    service
+      .getArticlesByPage(page, token)
+      .then((res) => {
+        dispatch({ type: ARTICLES_SAVE_TOTAL_PAGES, payload: res.articlesCount });
+        dispatch(saveArticles(res.articles));
         dispatch(showLoader(false));
       })
       .catch(() => {
@@ -156,24 +156,24 @@ export const newArticleEditTag = (e) => {
   return { type: ARTICLES_NEW_ARTICLE_EDIT_TAG, payload: { id: e.target.id, val: e.target.value } };
 };
 
-export function newArticleClearForm() {
-  return { type: ARTICLES_NEW_ARTICLE_CLEAR_FORM };
+export function newArticlePreparePage() {
+  return { type: ARTICLES_NEW_ARTICLE_PREPARE_PAGE };
 }
 
-export function deleteConfirmation(confirm) {
-  return {
-    type: ARTICLES_ARTICLE_DELETE_ARTICLE,
-    payload: confirm,
-  };
-}
-
-export function newArticlePrepareForm() {
+export function editArticlePagePrepare() {
   return { type: ARTICLES_ARTICLE_PREPARE_EDIT_FORM };
 }
 
 export function editConfirmation(confirm) {
   return {
     type: ARTICLES_ARTICLE_UPDATE_ARTICLE,
+    payload: confirm,
+  };
+}
+
+export function deleteConfirmation(confirm) {
+  return {
+    type: ARTICLES_ARTICLE_DELETE_ARTICLE,
     payload: confirm,
   };
 }

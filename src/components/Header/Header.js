@@ -19,7 +19,6 @@ const Header = ({ token, profileGetUserByToken }) => {
     }
   }, [token]);
 
-  console.log('Token:', token);
   return (
     <header className={classes.header}>
       <Link to="/" className={classes.header__logo}>

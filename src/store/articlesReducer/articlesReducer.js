@@ -5,9 +5,9 @@ import {
   ARTICLES_ARTICLE_UPDATE_ARTICLE,
   ARTICLES_CLEAR_ARTICLES,
   ARTICLES_NEW_ARTICLE_ADD_TAG,
-  ARTICLES_NEW_ARTICLE_CLEAR_FORM,
   ARTICLES_NEW_ARTICLE_DELETE_TAG,
   ARTICLES_NEW_ARTICLE_EDIT_TAG,
+  ARTICLES_NEW_ARTICLE_PREPARE_PAGE,
   ARTICLES_NEW_ARTICLE_SET_ARTICLE,
   ARTICLES_NEW_ARTICLE_SET_NEW_TAG,
   ARTICLES_NEW_ARTICLE_SET_SLUG,
@@ -48,20 +48,25 @@ const initialState = {
 
 export const articlesReducer = (state = JSON.parse(JSON.stringify(initialState)), action) => {
   switch (action.type) {
-    case ARTICLES_CLEAR_ARTICLES:
-      return { ...state, articles: [] };
-    case ARTICLES_ARTICLE_UPDATE_ARTICLE:
-      return { ...state, editSuccess: action.payload };
     case ARTICLES_ARTICLE_PREPARE_EDIT_FORM:
       return { ...state, newArticle: { ...state.currentArtcile } };
+    case ARTICLES_ARTICLE_UPDATE_ARTICLE:
+      return { ...state, editSuccess: action.payload };
+    case ARTICLES_NEW_ARTICLE_SET_SLUG:
+      return { ...state, newArticleSlug: action.payload };
+    case ARTICLES_NEW_ARTICLE_PREPARE_PAGE:
+      return JSON.parse(JSON.stringify(initialState));
+    case ARTICLES_ARTICLE_DELETE_ARTICLE:
+      return { ...state, deleteSuccess: action.payload };
+    case ARTICLES_SAVE_ARTICLE:
+      return { ...state, currentArtcile: action.payload };
+
+    case ARTICLES_CLEAR_ARTICLES:
+      return { ...state, articles: [] };
     case ARTICLES_SAVE_TOTAL_PAGES:
       return { ...state, totalPages: action.payload };
     case ARTICLES_SAVE_ARTICLES:
       return { ...state, articles: [...action.payload] };
-    case ARTICLES_SAVE_ARTICLE:
-      return { ...state, currentArtcile: action.payload };
-    case ARTICLES_ARTICLE_DELETE_ARTICLE:
-      return { ...state, deleteSuccess: action.payload };
     case ARTICLES_ARTICLE_FAVORITE_ACTION:
       return {
         ...state,
@@ -107,12 +112,9 @@ export const articlesReducer = (state = JSON.parse(JSON.stringify(initialState))
           ),
         },
       };
-    case ARTICLES_NEW_ARTICLE_SET_SLUG:
-      return { ...state, newArticleSlug: action.payload };
+
     case ARTICLES_NEW_ARTICLE_SET_VALIDATION_ERR:
       return { ...state, newArticleValidationErrors: { ...state.newArticleValidationErrors, ...action.payload } };
-    case ARTICLES_NEW_ARTICLE_CLEAR_FORM:
-      return JSON.parse(JSON.stringify(initialState));
     case SHOW_LOADER:
       return { ...state, loader: action.payload };
     case SHOW_CONNECTION_ERROR:

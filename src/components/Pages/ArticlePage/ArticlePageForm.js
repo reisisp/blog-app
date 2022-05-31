@@ -15,14 +15,14 @@ import classes from './ArticlePageForm.module.scss';
 
 const ArticlePageForm = ({
   currentArticle,
-  deleteArticle,
   token,
   modalVisible,
-  getArticleBySlug,
   currentUser,
-  setModalVisible,
   deleteSuccess,
+  deleteArticle,
+  getArticleBySlug,
   deleteConfirmation,
+  setModalVisible,
 }) => {
   const history = useHistory();
   const location = useLocation();

@@ -8,11 +8,11 @@ import { Btn } from '../UI/Btn/Btn';
 import logo from './profileDefault.png';
 import classes from './HeaderProfile.module.scss';
 
-const HeaderProfile = ({ user, logout, profileClearPwd }) => {
+const HeaderProfile = ({ user, logout }) => {
   return (
     <div className={classes.profile}>
       <Btn createArticleBtn={true}>Create article</Btn>
-      <Link to="/profile" onClick={profileClearPwd}>
+      <Link to="/profile">
         <div className={classes.profile__main}>
           <span className={classes.profile__name}>{user.username}</span>
           <img className={classes.profile__img} src={!user.image ? logo : user.image} alt="profile" />

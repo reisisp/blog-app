@@ -10,7 +10,7 @@ import { withLoadingAndErrors } from '../../../hoc/withLoadingAndErrors/withLoad
 
 const EditArticlePage = withContainer(
   withLoadingAndErrors(
-    ({ updateArticle, token, article, newArticlePrepareForm, editSuccess, editConfirmation }) => {
+    ({ token, article, editSuccess, updateArticle, editArticlePagePrepare, editConfirmation }) => {
       const history = useHistory();
       const location = useLocation();
       const locationArr = location.pathname.split('/');
@@ -19,7 +19,7 @@ const EditArticlePage = withContainer(
         if (!token) history.push('/');
       }, [token]);
       useEffect(() => {
-        newArticlePrepareForm();
+        editArticlePagePrepare();
         editConfirmation(false);
       }, []);
       useEffect(() => {
