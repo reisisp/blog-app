@@ -1,4 +1,3 @@
-import { checkEmail, checkUsername, checkPwd, checkImg } from '../../assets/externalFuncs/validationFuncs';
 import BlogService from '../../service/service-blog';
 import {
   AUTH_CLEAR_FORM,
@@ -21,6 +20,16 @@ import {
   SHOW_CONNECTION_ERROR,
   SHOW_LOADER,
 } from '../reduxTypes';
+
+import {
+  checkEmail,
+  checkUsername,
+  checkPwd,
+  checkImg,
+  checkAuthData,
+  checkProfileEditData,
+  checkRegisterData,
+} from './inputValidation.js';
 
 const service = new BlogService();
 
@@ -191,131 +200,6 @@ export const authClearForm = () => {
 export const profileClearPwd = () => {
   return { type: PROFILE_EDIT_CLEAR_PWD };
 };
-
-function checkRegisterData(user) {
-  return (dispatch) => {
-    const check =
-      !user.username ||
-      !checkUsername(user.username) ||
-      !user.email ||
-      !checkEmail(user.email) ||
-      !user.password ||
-      !checkPwd(user.password) ||
-      !user.repeatPwd ||
-      !checkPwd(user.repeatPwd) ||
-      !user.agreementCheckbox ||
-      user.password !== user.repeatPwd;
-    if (check) {
-      if (!checkUsername(user.username))
-        dispatch({ type: REGISTER_SET_VALIDATION_ERR, payload: { username: 'Username must be correct' } });
-      if (!user.username)
-        dispatch({ type: REGISTER_SET_VALIDATION_ERR, payload: { username: 'Username cannot be empty' } });
-      if (user.username && checkUsername(user.username))
-        dispatch({ type: REGISTER_SET_VALIDATION_ERR, payload: { username: '' } });
-
-      if (!checkEmail(user.email))
-        dispatch({ type: REGISTER_SET_VALIDATION_ERR, payload: { email: 'Email must be correct' } });
-      if (!user.email) dispatch({ type: REGISTER_SET_VALIDATION_ERR, payload: { email: 'Email cannot be empty' } });
-      if (user.email && checkEmail(user.email)) dispatch({ type: REGISTER_SET_VALIDATION_ERR, payload: { email: '' } });
-
-      if (!checkPwd(user.password))
-        dispatch({ type: REGISTER_SET_VALIDATION_ERR, payload: { password: 'Password must be correct' } });
-      if (!user.password)
-        dispatch({ type: REGISTER_SET_VALIDATION_ERR, payload: { password: 'Password cannot be empty' } });
-      if (user.password && checkPwd(user.password))
-        dispatch({ type: REGISTER_SET_VALIDATION_ERR, payload: { password: '' } });
-
-      if (!checkPwd(user.repeatPwd))
-        dispatch({ type: REGISTER_SET_VALIDATION_ERR, payload: { repeatPwd: 'Password must be correct' } });
-      if (!user.repeatPwd)
-        dispatch({ type: REGISTER_SET_VALIDATION_ERR, payload: { repeatPwd: 'Password cannot be empty' } });
-      if (user.repeatPwd && checkPwd(user.repeatPwd))
-        dispatch({ type: REGISTER_SET_VALIDATION_ERR, payload: { password: '' } });
-
-      if (!user.agreementCheckbox)
-        dispatch({ type: REGISTER_SET_VALIDATION_ERR, payload: { agreementCheckbox: 'click' } });
-      if (user.agreementCheckbox) dispatch({ type: REGISTER_SET_VALIDATION_ERR, payload: { agreementCheckbox: '' } });
-
-      if (user.password !== user.repeatPwd) {
-        dispatch({ type: REGISTER_SET_VALIDATION_ERR, payload: { password: 'Passwords must match' } });
-        dispatch({ type: REGISTER_SET_VALIDATION_ERR, payload: { repeatPwd: 'Passwords must match' } });
-      }
-    } else {
-      dispatch({
-        type: REGISTER_SET_VALIDATION_ERR,
-        payload: { username: '', email: '', password: '', repeatPwd: '', agreementCheckbox: '' },
-      });
-    }
-  };
-}
-function checkAuthData(user) {
-  return (dispatch) => {
-    const check = !user.email || !checkEmail(user.email) || !user.password || !checkPwd(user.password);
-    if (check) {
-      if (!checkEmail(user.email))
-        dispatch({ type: AUTH_SET_VALIDATION_ERR, payload: { email: 'Email must be correct' } });
-      if (!user.email) dispatch({ type: AUTH_SET_VALIDATION_ERR, payload: { email: 'Email cannot be empty' } });
-      if (user.email && checkEmail(user.email)) dispatch({ type: AUTH_SET_VALIDATION_ERR, payload: { email: '' } });
-
-      if (!checkPwd(user.password))
-        dispatch({ type: AUTH_SET_VALIDATION_ERR, payload: { password: 'Password must be correct' } });
-      if (!user.password)
-        dispatch({ type: AUTH_SET_VALIDATION_ERR, payload: { password: 'Password cannot be empty' } });
-      if (user.password && checkPwd(user.password))
-        dispatch({ type: AUTH_SET_VALIDATION_ERR, payload: { password: '' } });
-    } else {
-      dispatch({
-        type: AUTH_SET_VALIDATION_ERR,
-        payload: { email: '', password: '' },
-      });
-    }
-  };
-}
-function checkProfileEditData(user) {
-  return (dispatch) => {
-    const check =
-      !user.email ||
-      !user.password ||
-      !user.username ||
-      !user.image ||
-      !checkEmail(user.email) ||
-      !checkPwd(user.password) ||
-      !checkUsername(user.username) ||
-      !checkImg(user.image);
-    if (check) {
-      if (!checkUsername(user.username))
-        dispatch({ type: PROFILE_EDIT_SET_VALIDATION_ERR, payload: { username: 'Username must be correct' } });
-      if (!user.username)
-        dispatch({ type: PROFILE_EDIT_SET_VALIDATION_ERR, payload: { username: 'Username cannot be empty' } });
-      if (user.username && checkUsername(user.username))
-        dispatch({ type: PROFILE_EDIT_SET_VALIDATION_ERR, payload: { username: '' } });
-
-      if (!checkEmail(user.email))
-        dispatch({ type: PROFILE_EDIT_SET_VALIDATION_ERR, payload: { email: 'Email must be correct' } });
-      if (!user.email) dispatch({ type: PROFILE_EDIT_SET_VALIDATION_ERR, payload: { email: 'Email cannot be empty' } });
-      if (user.email && checkEmail(user.email))
-        dispatch({ type: PROFILE_EDIT_SET_VALIDATION_ERR, payload: { email: '' } });
-
-      if (!checkPwd(user.password))
-        dispatch({ type: PROFILE_EDIT_SET_VALIDATION_ERR, payload: { password: 'Password must be correct' } });
-      if (!user.password)
-        dispatch({ type: PROFILE_EDIT_SET_VALIDATION_ERR, payload: { password: 'Password cannot be empty' } });
-      if (user.password && checkPwd(user.password))
-        dispatch({ type: PROFILE_EDIT_SET_VALIDATION_ERR, payload: { password: '' } });
-
-      if (!checkImg(user.image))
-        dispatch({ type: PROFILE_EDIT_SET_VALIDATION_ERR, payload: { image: 'Image must be correct' } });
-      if (!user.image) dispatch({ type: PROFILE_EDIT_SET_VALIDATION_ERR, payload: { image: 'Image cannot be empty' } });
-      if (user.image && checkImg(user.image))
-        dispatch({ type: PROFILE_EDIT_SET_VALIDATION_ERR, payload: { image: '' } });
-    } else {
-      dispatch({
-        type: PROFILE_EDIT_SET_VALIDATION_ERR,
-        payload: { username: '', email: '', password: '', image: '' },
-      });
-    }
-  };
-}
 
 export const logout = () => {
   localStorage.clear();

@@ -12,7 +12,6 @@ import {
   ARTICLES_NEW_ARTICLE_SET_ARTICLE,
   ARTICLES_NEW_ARTICLE_SET_NEW_TAG,
   ARTICLES_NEW_ARTICLE_SET_SLUG,
-  ARTICLES_NEW_ARTICLE_SET_VALIDATION_ERR,
   ARTICLES_SAVE_ARTICLE,
   ARTICLES_SAVE_ARTICLES,
   ARTICLES_SAVE_TOTAL_PAGES,
@@ -20,15 +19,9 @@ import {
   SHOW_LOADER,
 } from '../reduxTypes';
 
+import { checkData } from './inputValidation';
+
 const service = new BlogService();
-
-function saveArticles(articles) {
-  return { type: ARTICLES_SAVE_ARTICLES, payload: articles };
-}
-
-function saveArticle(article) {
-  return { type: ARTICLES_SAVE_ARTICLE, payload: article };
-}
 
 export function getArticles(page, token) {
   return (dispatch) => {
@@ -77,8 +70,7 @@ export function createArticle(token, article) {
           dispatch({ type: ARTICLES_NEW_ARTICLE_SET_SLUG, payload: res.article.slug });
           dispatch(showLoader(false));
         })
-        .catch((e) => {
-          console.log(e);
+        .catch(() => {
           dispatch(showConnectionError());
           dispatch(showLoader(false));
         });
@@ -144,10 +136,6 @@ export function removeFavorite(slug, token) {
   };
 }
 
-function favoriteAction(favorited, favoritesCount, slug) {
-  return { type: ARTICLES_ARTICLE_FAVORITE_ACTION, payload: { favorited, favoritesCount, slug } };
-}
-
 export const setNewArticle = (e) => {
   return { type: ARTICLES_NEW_ARTICLE_SET_ARTICLE, payload: { [e.target.id]: e.target.value } };
 };
@@ -167,33 +155,6 @@ export function newArticleDeleteTag(id) {
 export const newArticleEditTag = (e) => {
   return { type: ARTICLES_NEW_ARTICLE_EDIT_TAG, payload: { id: e.target.id, val: e.target.value } };
 };
-
-function checkData(article) {
-  return (dispatch) => {
-    if (!article.title || !article.description || !article.body) {
-      if (!article.title)
-        dispatch({ type: ARTICLES_NEW_ARTICLE_SET_VALIDATION_ERR, payload: { title: 'Title cannot be empty' } });
-      if (article.title) dispatch({ type: ARTICLES_NEW_ARTICLE_SET_VALIDATION_ERR, payload: { title: '' } });
-
-      if (!article.body)
-        dispatch({ type: ARTICLES_NEW_ARTICLE_SET_VALIDATION_ERR, payload: { body: 'Body cannot be empty' } });
-      if (article.body) dispatch({ type: ARTICLES_NEW_ARTICLE_SET_VALIDATION_ERR, payload: { body: '' } });
-
-      if (!article.description)
-        dispatch({
-          type: ARTICLES_NEW_ARTICLE_SET_VALIDATION_ERR,
-          payload: { description: 'Description cannot be empty' },
-        });
-      if (article.description)
-        dispatch({ type: ARTICLES_NEW_ARTICLE_SET_VALIDATION_ERR, payload: { description: '' } });
-    } else {
-      dispatch({
-        type: ARTICLES_NEW_ARTICLE_SET_VALIDATION_ERR,
-        payload: { body: '', title: '', description: '' },
-      });
-    }
-  };
-}
 
 export function newArticleClearForm() {
   return { type: ARTICLES_NEW_ARTICLE_CLEAR_FORM };
@@ -215,6 +176,18 @@ export function editConfirmation(confirm) {
     type: ARTICLES_ARTICLE_UPDATE_ARTICLE,
     payload: confirm,
   };
+}
+
+function saveArticles(articles) {
+  return { type: ARTICLES_SAVE_ARTICLES, payload: articles };
+}
+
+function saveArticle(article) {
+  return { type: ARTICLES_SAVE_ARTICLE, payload: article };
+}
+
+function favoriteAction(favorited, favoritesCount, slug) {
+  return { type: ARTICLES_ARTICLE_FAVORITE_ACTION, payload: { favorited, favoritesCount, slug } };
 }
 
 function showLoader(visible = true) {
