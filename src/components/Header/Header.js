@@ -20,25 +20,27 @@ const Header = ({ token, profileGetUserByToken }) => {
   }, [token]);
 
   return (
-    <header className={classes.header}>
-      <Link to="/" className={classes.header__logo}>
-        Realworld Blog
-      </Link>
-      <div className={classes.header__btns}>
-        {!token ? (
-          <>
-            <Btn to="/sign-in" signInBtn>
-              Sign&nbsp;In
-            </Btn>
-            <Btn to="/sign-up" signUpBtn>
-              Sign&nbsp;Up
-            </Btn>
-          </>
-        ) : (
-          <HeaderProfile />
-        )}
-      </div>
-    </header>
+    <div className={classes.container}>
+      <header className={classes.header}>
+        <Link to="/" className={classes.header__logo}>
+          Realworld Blog
+        </Link>
+        <div className={classes.header__btns}>
+          {!token ? (
+            <>
+              <Btn to="/sign-in" signInBtn>
+                Sign&nbsp;In
+              </Btn>
+              <Btn to="/sign-up" signUpBtn>
+                Sign&nbsp;Up
+              </Btn>
+            </>
+          ) : (
+            <HeaderProfile />
+          )}
+        </div>
+      </header>
+    </div>
   );
 };
 

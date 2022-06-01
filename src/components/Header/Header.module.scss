@@ -1,6 +1,11 @@
+.container {
+    background: #ffffff;
+}
+
 .header {
     padding: 16px 22px;
-    background: #ffffff;
+    width: 1876px;
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -19,4 +24,10 @@
     display: flex;
     gap: 20px;
 }
+
+@media screen and (max-width: 1920px) {
+    .header {
+      width: 98%;
+    }
+  }
 

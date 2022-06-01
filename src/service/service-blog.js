@@ -5,26 +5,24 @@ export default class BlogService {
     const auth = token ? { Authorization: 'Bearer ' + token } : {};
     const body = Object.keys(data).length ? { body: JSON.stringify(data) } : {};
 
-    for (let count = 0; count < 5; count++) {
-      const res = await fetch(`${this._apiBase}${str}`, {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          ...auth,
-        },
-        method: method,
-        ...body,
-      });
-      if (!res.ok && count === 4) {
-        if (res.status === 422) {
-          return await res.json();
-        } else {
-          throw new Error(`Could not fetch url: ${res.status}`);
-        }
+    const res = await fetch(`${this._apiBase}${str}`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        ...auth,
+      },
+      method: method,
+      ...body,
+    });
+    if (!res.ok) {
+      if (res.status === 422) {
+        return await res.json();
+      } else {
+        throw new Error(`Could not fetch url: ${res.status}`);
       }
-      if (res.ok && method === 'DELETE' && delArt) return res.ok;
-      if (res.ok) return await res.json();
     }
+    if (res.ok && method === 'DELETE' && delArt) return res.ok;
+    if (res.ok) return await res.json();
   }
 
   getArticlesByPage(page, token = '') {
@@ -37,18 +35,14 @@ export default class BlogService {
 
   registerUser(user) {
     const data = {
-      user: {
-        username: user.username,
-        email: user.email,
-        password: user.password,
-      },
+      user: { ...user },
     };
     return this.getRes('/users', data, 'POST');
   }
 
   login(user) {
     const data = {
-      user: { email: user.email, password: user.password },
+      user: { ...user },
     };
     return this.getRes('/users/login', data, 'POST');
   }
@@ -59,12 +53,7 @@ export default class BlogService {
 
   updateUser(token, user) {
     const data = {
-      user: {
-        username: user.username,
-        email: user.email,
-        password: user.password,
-        image: user.image,
-      },
+      user: { ...user },
     };
     return this.getRes('/user', data, 'PUT', token);
   }
