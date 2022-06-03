@@ -2,15 +2,9 @@ import BlogService from '../../service/service-blog';
 import {
   ARTICLES_ARTICLE_DELETE_ARTICLE,
   ARTICLES_ARTICLE_FAVORITE_ACTION,
-  ARTICLES_ARTICLE_PREPARE_EDIT_FORM,
   ARTICLES_ARTICLE_UPDATE_ARTICLE,
   ARTICLES_CLEAR_ARTICLES,
-  ARTICLES_NEW_ARTICLE_ADD_TAG,
-  ARTICLES_NEW_ARTICLE_DELETE_TAG,
-  ARTICLES_NEW_ARTICLE_EDIT_TAG,
   ARTICLES_NEW_ARTICLE_PREPARE_PAGE,
-  ARTICLES_NEW_ARTICLE_SET_ARTICLE,
-  ARTICLES_NEW_ARTICLE_SET_NEW_TAG,
   ARTICLES_NEW_ARTICLE_SET_SLUG,
   ARTICLES_SAVE_ARTICLE,
   ARTICLES_SAVE_ARTICLES,
@@ -25,17 +19,22 @@ const service = new BlogService();
 
 export function updateArticle(slug, article, token) {
   return (dispatch) => {
-    dispatch(showLoader());
-    service
-      .updateArticle(slug, article, token)
-      .then(() => {
-        dispatch(editConfirmation(true));
-        dispatch(showLoader(false));
-      })
-      .catch(() => {
-        dispatch(showConnectionError());
-        dispatch(showLoader(false));
-      });
+    if (!article.title || !article.description || !article.body) {
+      dispatch(checkData(article));
+    } else {
+      dispatch(checkData(article));
+      dispatch(showLoader());
+      service
+        .updateArticle(slug, article, token)
+        .then(() => {
+          dispatch(editConfirmation(true));
+          dispatch(showLoader(false));
+        })
+        .catch(() => {
+          dispatch(showConnectionError());
+          dispatch(showLoader(false));
+        });
+    }
   };
 }
 
@@ -136,32 +135,8 @@ export function removeFavorite(slug, token) {
   };
 }
 
-export const setNewArticle = (e) => {
-  return { type: ARTICLES_NEW_ARTICLE_SET_ARTICLE, payload: { [e.target.id]: e.target.value } };
-};
-
-export const setNewArticleTag = (e) => {
-  return { type: ARTICLES_NEW_ARTICLE_SET_NEW_TAG, payload: e.target.value };
-};
-
-export const newArticleAddTag = () => {
-  return { type: ARTICLES_NEW_ARTICLE_ADD_TAG };
-};
-
-export function newArticleDeleteTag(id) {
-  return { type: ARTICLES_NEW_ARTICLE_DELETE_TAG, payload: id };
-}
-
-export const newArticleEditTag = (e) => {
-  return { type: ARTICLES_NEW_ARTICLE_EDIT_TAG, payload: { id: e.target.id, val: e.target.value } };
-};
-
 export function newArticlePreparePage() {
   return { type: ARTICLES_NEW_ARTICLE_PREPARE_PAGE };
-}
-
-export function editArticlePagePrepare() {
-  return { type: ARTICLES_ARTICLE_PREPARE_EDIT_FORM };
 }
 
 export function editConfirmation(confirm) {

@@ -10,23 +10,21 @@ import { withLoadingAndErrors } from '../../../hoc/withLoadingAndErrors/withLoad
 
 const EditArticlePage = withContainer(
   withLoadingAndErrors(
-    ({ token, article, editSuccess, updateArticle, editArticlePagePrepare, editConfirmation }) => {
+    ({ token, editSuccess, updateArticle, editConfirmation, getArticleBySlug }) => {
       const history = useHistory();
       const location = useLocation();
       const locationArr = location.pathname.split('/');
       const currentSlug = locationArr[locationArr.length - 2];
       useEffect(() => {
-        if (!token) history.push('/');
+        if (localStorage.getItem('token') === null) history.push('/');
+        getArticleBySlug(currentSlug, token);
       }, [token]);
       useEffect(() => {
-        editArticlePagePrepare();
-        editConfirmation(false);
-      }, []);
-      useEffect(() => {
         if (editSuccess) history.push(`/articles/${currentSlug}`);
+        editConfirmation(false);
       }, [editSuccess]);
 
-      return <CreateEditArticlePageForm formAction={() => updateArticle(currentSlug, article, token)} edit={true} />;
+      return <CreateEditArticlePageForm formAction={updateArticle} currentSlug={currentSlug} edit={true} />;
     },
     'normal',
     'normal'
@@ -37,7 +35,6 @@ const EditArticlePage = withContainer(
 function mapStateToProps({ articlesReducer, profileReducer }) {
   return {
     token: profileReducer.token,
-    article: articlesReducer.newArticle,
     editSuccess: articlesReducer.editSuccess,
     loading: articlesReducer.loader,
     err: articlesReducer.connectionError,

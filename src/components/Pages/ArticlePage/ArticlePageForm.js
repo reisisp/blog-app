@@ -38,29 +38,33 @@ const ArticlePageForm = ({
   useEffect(() => {
     getArticleBySlug(currentSlug, token);
     setModalVisible(false);
-  }, []);
+  }, [token]);
   return (
     <article className={classes.article}>
-      <ArticleCardForm article={currentArticle} />
-      {currentUser === currentArticle.author.username && (
+      {currentArticle.author ? (
         <>
-          <div className={classes.article__btns}>
-            <Btn deleteArticlebtn onClick={() => setModalVisible(true)}>
-              Delete
-            </Btn>
-            <Btn editArticlebtn to={`/articles/${currentSlug}/edit`}>
-              Edit
-            </Btn>
-            {modalVisible && (
-              <ApplyModal
-                actionConfirm={() => deleteArticle(token, currentSlug)}
-                actionClose={() => setModalVisible(false)}
-              />
-            )}
-          </div>
+          <ArticleCardForm article={currentArticle} />
+          {currentUser === currentArticle.author.username && (
+            <>
+              <div className={classes.article__btns}>
+                <Btn deleteArticlebtn onClick={() => setModalVisible(true)}>
+                  Delete
+                </Btn>
+                <Btn editArticlebtn to={`/articles/${currentSlug}/edit`}>
+                  Edit
+                </Btn>
+                {modalVisible && (
+                  <ApplyModal
+                    actionConfirm={() => deleteArticle(token, currentSlug)}
+                    actionClose={() => setModalVisible(false)}
+                  />
+                )}
+              </div>
+            </>
+          )}
+          <MarkdownBody text={currentArticle.body} />
         </>
-      )}
-      <MarkdownBody text={currentArticle.body} />
+      ) : null}
     </article>
   );
 };

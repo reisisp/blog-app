@@ -10,7 +10,7 @@ import classes from './ArticlesPageForm.module.scss';
 const ArticlesPageForm = ({ token, articles, getArticles, currentPage }) => {
   useEffect(() => {
     getArticles(currentPage, token);
-  }, [currentPage]);
+  }, [currentPage, token]);
 
   return (
     <section className={classes.cardList}>

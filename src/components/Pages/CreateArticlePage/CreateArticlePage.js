@@ -9,19 +9,16 @@ import { withLoadingAndErrors } from '../../../hoc/withLoadingAndErrors/withLoad
 
 const CreateArticlePage = withContainer(
   withLoadingAndErrors(
-    ({ token, article, slug, newArticlePreparePage, createArticle }) => {
+    ({ token, slug, newArticlePreparePage, createArticle }) => {
       const history = useHistory();
       useEffect(() => {
-        newArticlePreparePage();
-      }, []);
-      useEffect(() => {
-        if (!token) history.push('/');
+        if (localStorage.getItem('token') === null) history.push('/');
       }, [token]);
       useEffect(() => {
         if (slug) history.push(`/articles/${slug}`);
         newArticlePreparePage();
       }, [slug]);
-      return <CreateEditArticlePageForm formAction={() => createArticle(token, article)} edit={false} />;
+      return <CreateEditArticlePageForm formAction={createArticle} edit={false} />;
     },
     'normal',
     'normal'
@@ -32,7 +29,6 @@ const CreateArticlePage = withContainer(
 function mapStateToProps({ articlesReducer, profileReducer }) {
   return {
     token: profileReducer.token,
-    article: articlesReducer.newArticle,
     slug: articlesReducer.newArticleSlug,
     loading: articlesReducer.loader,
     err: articlesReducer.connectionError,
