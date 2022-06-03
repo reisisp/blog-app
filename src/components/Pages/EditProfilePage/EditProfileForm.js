@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -10,17 +10,29 @@ import classes from './EditProfileForm.module.scss';
 
 const EditProfileForm = ({
   token,
-  user,
+  storeUser,
   validationErrors,
-  profileEditSetUser,
   saveEditedUser,
+  profileEditSuccess,
   profilePrepareEditPage,
 }) => {
   const history = useHistory();
+  const [user, setUser] = useState({ username: '', email: '', password: '', image: '' });
+  const editUser = (e) => {
+    setUser({ ...user, [e.target.id]: e.target.value });
+  };
+  const saveEdited = () => {
+    saveEditedUser(token, user);
+    setUser({ ...user, password: '' });
+  };
   useEffect(() => {
-    if (!token) history.push('/');
-    if (token) profilePrepareEditPage();
+    if (localStorage.getItem('token') === null) history.push('/');
+    setUser({ ...user, ...storeUser });
+    profilePrepareEditPage();
   }, [token]);
+  useEffect(() => {
+    if (profileEditSuccess) setUser({ ...user, password: '' });
+  }, [profileEditSuccess]);
 
   const validInputs = [
     {
@@ -66,7 +78,7 @@ const EditProfileForm = ({
             key={el.id}
             err={el.err}
             value={el.val}
-            onChange={profileEditSetUser}
+            onChange={editUser}
             id={el.id}
             type={el.type}
             placeholder={el.placeholder}
@@ -75,7 +87,7 @@ const EditProfileForm = ({
         ))}
       </div>
       <div className={classes.profile__btns}>
-        <Btn confirmBtn onClick={() => saveEditedUser(token, user)}>
+        <Btn confirmBtn onClick={saveEdited}>
           Save
         </Btn>
       </div>
@@ -86,7 +98,8 @@ const EditProfileForm = ({
 function mapStateToProps({ profileReducer }) {
   return {
     token: profileReducer.token,
-    user: profileReducer.editProfileUser,
+    storeUser: profileReducer.user,
+    profileEditSuccess: profileReducer.profileEditSuccess,
     validationErrors: profileReducer.validationErrors,
   };
 }

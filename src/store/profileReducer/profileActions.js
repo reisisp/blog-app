@@ -4,18 +4,10 @@ import {
   SAVE_TOKEN,
   SHOW_CONNECTION_ERROR,
   SHOW_LOADER,
-  AUTH_CLEAR_PWD,
-  AUTH_SET_USER,
-  PROFILE_EDIT_CLEAR_PWD,
-  PROFILE_EDIT_SET_USER,
   PROFILE_SET_VALIDATION_ERR,
-  REGISTER_CLEAR_PWD,
-  REGISTER_PREPARE_PAGE,
-  REGISTER_SET_CHECKBOX,
-  REGISTER_SET_USER,
-  AUTH_PREPARE_PAGE,
   SAVE_USER,
-  PROFILE_PREPARE_EDIT_PAGE,
+  PROFILE_PREPARE_PAGE,
+  PROFILE_EDIT_SUCCESS,
 } from '../reduxTypes';
 
 import {
@@ -45,7 +37,6 @@ export function registerNewUser(user) {
       user.password !== user.repeatPwd;
     if (check) {
       dispatch(checkRegisterData(user));
-      dispatch({ type: REGISTER_CLEAR_PWD });
     } else {
       dispatch(checkRegisterData(user));
       dispatch(showLoader());
@@ -55,16 +46,14 @@ export function registerNewUser(user) {
           if (res.errors) {
             if (res.errors.username) dispatch(addValidationErr({ username: res.errors.username }));
             if (res.errors.email) dispatch(addValidationErr({ email: res.errors.email }));
-            dispatch({ type: REGISTER_CLEAR_PWD });
           } else {
             dispatch({ type: SAVE_USER, payload: { ...res.user } });
             dispatch({ type: SAVE_TOKEN, payload: res.user.token });
+            localStorage.setItem('token', res.user.token);
           }
           dispatch(showLoader(false));
         })
-        .catch((e) => {
-          console.log(e);
-          dispatch(registerPreparePage());
+        .catch(() => {
           dispatch(showConnectionError());
           dispatch(showLoader(false));
         });
@@ -76,7 +65,6 @@ export function authUser(user) {
   return (dispatch) => {
     if (!user.email || !user.password || !checkEmail(user.email) || !checkPwd(user.password)) {
       dispatch(checkAuthData(user));
-      dispatch({ type: AUTH_CLEAR_PWD });
     } else {
       dispatch(checkAuthData(user));
       dispatch(showLoader());
@@ -87,10 +75,10 @@ export function authUser(user) {
             dispatch(
               addValidationErr({ email: 'Email or password is invalid', password: 'Email or password is invalid' })
             );
-            dispatch({ type: AUTH_CLEAR_PWD });
           } else {
             dispatch({ type: SAVE_USER, payload: { ...res.user } });
             dispatch({ type: SAVE_TOKEN, payload: res.user.token });
+            localStorage.setItem('token', res.user.token);
           }
           dispatch(showLoader(false));
         })
@@ -115,7 +103,6 @@ export function saveEditedUser(token, user) {
       !checkImg(user.image)
     ) {
       dispatch(checkProfileEditData(user));
-      dispatch(profileClearPwd());
     } else {
       dispatch(checkProfileEditData(user));
       dispatch(showLoader());
@@ -126,14 +113,14 @@ export function saveEditedUser(token, user) {
             dispatch(
               addValidationErr({
                 email: 'Email or username is already taken',
-                password: 'Email or username is already taken',
+                username: 'Email or username is already taken',
               })
             );
-            dispatch(profileClearPwd());
           } else {
-            dispatch(profileGetUserByToken(token));
+            dispatch({ type: SAVE_USER, payload: { ...res.user } });
+            dispatch({ type: SAVE_TOKEN, payload: res.user.token });
+            dispatch(profileEditSuccess());
           }
-          dispatch(profileClearPwd());
           dispatch(showLoader(false));
         })
         .catch(() => {
@@ -165,36 +152,19 @@ export function profileGetUserByToken(token) {
   };
 }
 
+const profileEditSuccess = (success = true) => {
+  return { type: PROFILE_EDIT_SUCCESS, payload: success };
+};
+
 export const profilePrepareEditPage = () => {
-  return { type: PROFILE_PREPARE_EDIT_PAGE };
+  return (dispatch) => {
+    dispatch(profileEditSuccess(false));
+    dispatch(preparePage());
+  };
 };
 
-export const profileEditSetUser = (e) => {
-  return { type: PROFILE_EDIT_SET_USER, payload: { [e.target.id]: e.target.value } };
-};
-
-export const profileClearPwd = () => {
-  return { type: PROFILE_EDIT_CLEAR_PWD };
-};
-
-export const authPreparePage = () => {
-  return { type: AUTH_PREPARE_PAGE };
-};
-
-export const authSetUser = (e) => {
-  return { type: AUTH_SET_USER, payload: { [e.target.id]: e.target.value } };
-};
-
-export const registerPreparePage = () => {
-  return { type: REGISTER_PREPARE_PAGE };
-};
-
-export const registerSetUser = (e) => {
-  return { type: REGISTER_SET_USER, payload: { [e.target.id]: e.target.value } };
-};
-
-export const registerSetAgreementCheckbox = (e) => {
-  return { type: REGISTER_SET_CHECKBOX, payload: e.target.checked };
+export const preparePage = () => {
+  return { type: PROFILE_PREPARE_PAGE };
 };
 
 export const logout = () => {

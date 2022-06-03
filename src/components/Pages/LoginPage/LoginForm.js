@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -8,13 +8,21 @@ import { Btn } from '../../UI/Btn/Btn';
 
 import classes from './LoginForm.module.scss';
 
-const LoginForm = ({ token, user, validationErrors, authSetUser, authUser, authPreparePage }) => {
+const LoginForm = ({ token, validationErrors, authUser, preparePage }) => {
   const history = useHistory();
+  const [user, setUser] = useState({ email: '', password: '' });
+  const editUser = (e) => {
+    setUser({ ...user, [e.target.id]: e.target.value });
+  };
+  const login = () => {
+    authUser(user);
+    setUser({ ...user, password: '' });
+  };
   useEffect(() => {
     if (token) history.push('/');
   }, [token]);
   useEffect(() => {
-    authPreparePage();
+    preparePage();
   }, []);
   const validInputs = [
     {
@@ -42,7 +50,7 @@ const LoginForm = ({ token, user, validationErrors, authSetUser, authUser, authP
           <NewInputWithValidation
             key={el.id}
             value={el.val}
-            onChange={authSetUser}
+            onChange={editUser}
             err={el.err}
             id={el.id}
             type={el.type}
@@ -52,7 +60,7 @@ const LoginForm = ({ token, user, validationErrors, authSetUser, authUser, authP
         ))}
       </div>
       <div className={classes.login__btns}>
-        <Btn confirmBtn onClick={() => authUser(user)}>
+        <Btn confirmBtn onClick={login}>
           Login
         </Btn>
         <p className={classes.signup}>
@@ -69,7 +77,6 @@ const LoginForm = ({ token, user, validationErrors, authSetUser, authUser, authP
 function mapStateToProps({ profileReducer }) {
   return {
     token: profileReducer.token,
-    user: profileReducer.authUser,
     validationErrors: profileReducer.validationErrors,
   };
 }

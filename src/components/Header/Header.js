@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -8,17 +8,7 @@ import HeaderProfile from '../HeaderProfile/HeaderProfile';
 
 import classes from './Header.module.scss';
 
-const Header = ({ token, profileGetUserByToken }) => {
-  useEffect(() => {
-    if (token) {
-      localStorage.setItem('token', token);
-    }
-    if (!token) {
-      const savedToken = localStorage.getItem('token');
-      if (typeof savedToken === 'string') profileGetUserByToken(savedToken);
-    }
-  }, [token]);
-
+const Header = ({ token }) => {
   return (
     <div className={classes.container}>
       <header className={classes.header}>
@@ -26,7 +16,7 @@ const Header = ({ token, profileGetUserByToken }) => {
           Realworld Blog
         </Link>
         <div className={classes.header__btns}>
-          {!token ? (
+          {!token.length ? (
             <>
               <Btn to="/sign-in" signInBtn>
                 Sign&nbsp;In

@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 
 import { rootReducer } from './store/rootReducer';
-import { App } from './components/App/App';
+import App from './components/App/App';
 
 import './assets/nullify.scss';
 import './assets/index.scss';

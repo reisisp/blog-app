@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 
@@ -9,21 +9,24 @@ import { Btn } from '../../UI/Btn/Btn';
 
 import classes from './RegistrationForm.module.scss';
 
-const RegistrationForm = ({
-  token,
-  user,
-  validationErrors,
-  registerPreparePage,
-  registerSetUser,
-  registerSetAgreementCheckbox,
-  registerNewUser,
-}) => {
+const RegistrationForm = ({ token, validationErrors, preparePage, registerNewUser }) => {
   const history = useHistory();
+  const [user, setUser] = useState({ username: '', email: '', password: '', repeatPwd: '', agreementCheckbox: false });
+  const editUser = (e) => {
+    setUser({ ...user, [e.target.id]: e.target.value });
+  };
+  const editCheckbox = (e) => {
+    setUser({ ...user, agreementCheckbox: e.target.checked });
+  };
+  const register = () => {
+    registerNewUser(user);
+    setUser({ ...user, password: '', repeatPwd: '' });
+  };
   useEffect(() => {
     if (token) history.push('/');
   }, [token]);
   useEffect(() => {
-    registerPreparePage();
+    preparePage();
   }, []);
   const inputs = [
     {
@@ -68,7 +71,7 @@ const RegistrationForm = ({
             key={el.id}
             err={el.err}
             value={el.val}
-            onChange={registerSetUser}
+            onChange={editUser}
             id={el.id}
             type={el.type}
             placeholder={el.placeholder}
@@ -78,7 +81,7 @@ const RegistrationForm = ({
       </div>
       <CustomCheckBox
         checked={user.agreementCheckbox}
-        onChange={registerSetAgreementCheckbox}
+        onChange={editCheckbox}
         err={validationErrors.agreementCheckbox}
         name="agreementCheckbox"
         id="agreementCheckbox"
@@ -86,7 +89,7 @@ const RegistrationForm = ({
         I agree to the processing of my personal information
       </CustomCheckBox>
       <div className={classes.register__btns}>
-        <Btn confirmBtn onClick={() => registerNewUser(user)}>
+        <Btn confirmBtn onClick={register}>
           Create
         </Btn>
         <p className={classes.signin}>
@@ -103,7 +106,6 @@ const RegistrationForm = ({
 function mapStateToProps({ profileReducer }) {
   return {
     token: profileReducer.token,
-    user: profileReducer.newUser,
     validationErrors: profileReducer.validationErrors,
   };
 }

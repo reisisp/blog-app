@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
 
+import * as profileAction from '../../store/profileReducer/profileActions';
 import Header from '../Header/Header';
 import ArticlePage from '../Pages/ArticlePage/ArticlePage';
 import ArticlesPage from '../Pages/ArticlesPage/ArticlesPage';
@@ -10,7 +12,19 @@ import EditProfilePage from '../Pages/EditProfilePage/EditProfilePage';
 import LoginPage from '../Pages/LoginPage/LoginPage';
 import RegistrationPage from '../Pages/RegistrationPage/RegistrationPage';
 
-export const App = () => {
+const App = ({ token, profileGetUserByToken }) => {
+  const [savedToken, setSavedToken] = useState(
+    localStorage.getItem('token') === null ? '' : localStorage.getItem('token')
+  );
+  useEffect(() => {
+    setSavedToken(localStorage.getItem('token') === null ? '' : localStorage.getItem('token'));
+  }, [token]);
+  useEffect(() => {
+    if (savedToken.length) {
+      profileGetUserByToken(savedToken);
+    }
+  }, [savedToken]);
+
   return (
     <Router>
       <div className="App">
@@ -31,4 +45,10 @@ export const App = () => {
   );
 };
 
-export default App;
+function mapStateToProps({ profileReducer }) {
+  return {
+    token: profileReducer.token,
+  };
+}
+
+export default connect(mapStateToProps, profileAction)(App);
