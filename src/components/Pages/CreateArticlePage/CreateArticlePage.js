@@ -9,11 +9,8 @@ import { withLoadingAndErrors } from '../../../hoc/withLoadingAndErrors/withLoad
 
 const CreateArticlePage = withContainer(
   withLoadingAndErrors(
-    ({ token, slug, newArticlePreparePage, createArticle }) => {
+    ({ slug, newArticlePreparePage, createArticle }) => {
       const history = useHistory();
-      useEffect(() => {
-        if (localStorage.getItem('token') === null) history.push('/');
-      }, [token]);
       useEffect(() => {
         if (slug) history.push(`/articles/${slug}`);
         newArticlePreparePage();

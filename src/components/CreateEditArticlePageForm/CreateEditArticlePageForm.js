@@ -12,7 +12,6 @@ import classes from './CreateEditArticlePageForm.module.scss';
 const CreateEditArticlePageForm = ({ edit, formAction, currentSlug, storeArticle, validationErr }) => {
   const [article, setArticle] = useState({ title: '', body: '', description: '', tagList: [] });
   const [tag, setTag] = useState('');
-  const token = localStorage.getItem('token');
   const editArticle = (e) => {
     setArticle({ ...article, [e.target.id]: e.target.value });
   };
@@ -95,10 +94,7 @@ const CreateEditArticlePageForm = ({ edit, formAction, currentSlug, storeArticle
           </div>
         </div>
         <div>
-          <Btn
-            confirmBtn
-            onClick={() => (!edit ? formAction(token, article) : formAction(currentSlug, article, token))}
-          >
+          <Btn confirmBtn onClick={() => (!edit ? formAction(article) : formAction(currentSlug, article))}>
             Send
           </Btn>
         </div>

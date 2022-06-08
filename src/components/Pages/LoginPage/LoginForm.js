@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import * as profileActions from '../../../store/profileReducer/profileActions';
@@ -8,8 +8,7 @@ import { Btn } from '../../UI/Btn/Btn';
 
 import classes from './LoginForm.module.scss';
 
-const LoginForm = ({ token, validationErrors, authUser, preparePage }) => {
-  const history = useHistory();
+const LoginForm = ({ validationErrors, authUser, preparePage }) => {
   const [user, setUser] = useState({ email: '', password: '' });
   const editUser = (e) => {
     setUser({ ...user, [e.target.id]: e.target.value });
@@ -18,9 +17,7 @@ const LoginForm = ({ token, validationErrors, authUser, preparePage }) => {
     authUser(user);
     setUser({ ...user, password: '' });
   };
-  useEffect(() => {
-    if (token) history.push('/');
-  }, [token]);
+
   useEffect(() => {
     preparePage();
   }, []);

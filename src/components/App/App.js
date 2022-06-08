@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
+import { Switch, Route, Redirect, BrowserRouter as Router } from 'react-router-dom';
 
 import * as profileAction from '../../store/profileReducer/profileActions';
 import Header from '../Header/Header';
@@ -21,7 +21,7 @@ const App = ({ token, profileGetUserByToken }) => {
   }, [token]);
   useEffect(() => {
     if (savedToken.length) {
-      profileGetUserByToken(savedToken);
+      profileGetUserByToken();
     }
   }, [savedToken]);
 
@@ -31,13 +31,23 @@ const App = ({ token, profileGetUserByToken }) => {
         <Header />
         <Switch>
           <Route path="/" exact component={ArticlesPage} />
-          <Route path="/sign-up" exact component={RegistrationPage} />
-          <Route path="/sign-in" exact component={LoginPage} />
-          <Route path="/profile" exact component={EditProfilePage} />
+          <Route path="/sign-up" exact>
+            {!savedToken ? <RegistrationPage /> : <Redirect to="/" />}
+          </Route>
+          <Route path="/sign-in" exact>
+            {!savedToken ? <LoginPage /> : <Redirect to="/" />}
+          </Route>
+          <Route path="/profile" exact>
+            {savedToken ? <EditProfilePage /> : <Redirect to="/" />}
+          </Route>
           <Route path="/articles" exact component={ArticlesPage} />
           <Route path="/articles/:slug" exact component={ArticlePage} />
-          <Route path="/new-article" exact component={CreateArticlePage} />
-          <Route path="/articles/:slug/edit" exact component={EditArticlePage} />
+          <Route path="/new-article" exact>
+            {savedToken ? <CreateArticlePage /> : <Redirect to="/" />}
+          </Route>
+          <Route path="/articles/:slug/edit" exact>
+            {savedToken ? <EditArticlePage /> : <Redirect to="/" />}
+          </Route>
           <Route render={() => <h2>Page not found</h2>} />
         </Switch>
       </div>

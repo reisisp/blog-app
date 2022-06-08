@@ -17,13 +17,14 @@ import { checkData } from './inputValidation';
 
 const service = new BlogService();
 
-export function updateArticle(slug, article, token) {
+export function updateArticle(slug, article) {
   return (dispatch) => {
     if (!article.title || !article.description || !article.body) {
       dispatch(checkData(article));
     } else {
       dispatch(checkData(article));
       dispatch(showLoader());
+      const token = localStorage.getItem('token') === null ? '' : localStorage.getItem('token');
       service
         .updateArticle(slug, article, token)
         .then(() => {
@@ -38,13 +39,14 @@ export function updateArticle(slug, article, token) {
   };
 }
 
-export function createArticle(token, article) {
+export function createArticle(article) {
   return (dispatch) => {
     if (!article.title || !article.description || !article.body) {
       dispatch(checkData(article));
     } else {
       dispatch(checkData(article));
       dispatch(showLoader());
+      const token = localStorage.getItem('token') === null ? '' : localStorage.getItem('token');
       service
         .createArticle(article, token)
         .then((res) => {
@@ -59,9 +61,10 @@ export function createArticle(token, article) {
   };
 }
 
-export function deleteArticle(token, slug) {
+export function deleteArticle(slug) {
   return (dispatch) => {
     dispatch(showLoader());
+    const token = localStorage.getItem('token') === null ? '' : localStorage.getItem('token');
     service
       .deleteArticle(slug, token)
       .then(() => {
@@ -75,9 +78,10 @@ export function deleteArticle(token, slug) {
   };
 }
 
-export function getArticleBySlug(slug, token) {
+export function getArticleBySlug(slug) {
   return (dispatch) => {
     dispatch(showLoader());
+    const token = localStorage.getItem('token') === null ? '' : localStorage.getItem('token');
     service
       .getArticleBySlug(slug, token)
       .then((res) => {
@@ -91,10 +95,11 @@ export function getArticleBySlug(slug, token) {
   };
 }
 
-export function getArticles(page, token) {
+export function getArticles(page) {
   return (dispatch) => {
     dispatch(showLoader());
     dispatch({ type: ARTICLES_CLEAR_ARTICLES });
+    const token = localStorage.getItem('token') === null ? '' : localStorage.getItem('token');
     service
       .getArticlesByPage(page, token)
       .then((res) => {
@@ -109,8 +114,9 @@ export function getArticles(page, token) {
   };
 }
 
-export function setFavorite(slug, token) {
+export function setFavorite(slug) {
   return (dispatch) => {
+    const token = localStorage.getItem('token') === null ? '' : localStorage.getItem('token');
     service
       .setFavorite(slug, token)
       .then((res) => {
@@ -122,8 +128,9 @@ export function setFavorite(slug, token) {
   };
 }
 
-export function removeFavorite(slug, token) {
+export function removeFavorite(slug) {
   return (dispatch) => {
+    const token = localStorage.getItem('token') === null ? '' : localStorage.getItem('token');
     service
       .removeFavorite(slug, token)
       .then((res) => {

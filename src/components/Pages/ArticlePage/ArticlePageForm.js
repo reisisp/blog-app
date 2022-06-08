@@ -36,7 +36,7 @@ const ArticlePageForm = ({
   }, [deleteSuccess]);
 
   useEffect(() => {
-    getArticleBySlug(currentSlug, token);
+    getArticleBySlug(currentSlug);
     setModalVisible(false);
   }, [token]);
   return (
@@ -55,7 +55,7 @@ const ArticlePageForm = ({
                 </Btn>
                 {modalVisible && (
                   <ApplyModal
-                    actionConfirm={() => deleteArticle(token, currentSlug)}
+                    actionConfirm={() => deleteArticle(currentSlug)}
                     actionClose={() => setModalVisible(false)}
                   />
                 )}

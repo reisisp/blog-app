@@ -16,8 +16,7 @@ const EditArticlePage = withContainer(
       const locationArr = location.pathname.split('/');
       const currentSlug = locationArr[locationArr.length - 2];
       useEffect(() => {
-        if (localStorage.getItem('token') === null) history.push('/');
-        getArticleBySlug(currentSlug, token);
+        getArticleBySlug(currentSlug);
       }, [token]);
       useEffect(() => {
         if (editSuccess) history.push(`/articles/${currentSlug}`);

@@ -14,7 +14,6 @@ import {
   checkEmail,
   checkUsername,
   checkPwd,
-  checkImg,
   checkAuthData,
   checkProfileEditData,
   checkRegisterData,
@@ -90,22 +89,14 @@ export function authUser(user) {
   };
 }
 
-export function saveEditedUser(token, user) {
+export function saveEditedUser(user) {
   return (dispatch) => {
-    if (
-      !user.email ||
-      !user.password ||
-      !user.username ||
-      !user.image ||
-      !checkEmail(user.email) ||
-      !checkPwd(user.password) ||
-      !checkUsername(user.username) ||
-      !checkImg(user.image)
-    ) {
+    if (!user.email || !user.username || !checkEmail(user.email) || !checkUsername(user.username)) {
       dispatch(checkProfileEditData(user));
     } else {
       dispatch(checkProfileEditData(user));
       dispatch(showLoader());
+      const token = localStorage.getItem('token') === null ? '' : localStorage.getItem('token');
       service
         .updateUser(token, user)
         .then((res) => {
@@ -131,9 +122,10 @@ export function saveEditedUser(token, user) {
   };
 }
 
-export function profileGetUserByToken(token) {
+export function profileGetUserByToken() {
   return (dispatch) => {
     dispatch(showLoader());
+    const token = localStorage.getItem('token') === null ? '' : localStorage.getItem('token');
     service
       .getCurrentUser(token)
       .then((res) => {

@@ -8,7 +8,7 @@ import img_active from './like_active.png';
 import classes from './Likes.module.scss';
 
 const Likes = ({ slug, favoritesCount, favorited, token, setFavorite, removeFavorite }) => {
-  const action = favorited ? () => removeFavorite(slug, token) : () => setFavorite(slug, token);
+  const action = favorited ? () => removeFavorite(slug) : () => setFavorite(slug);
   return (
     <span className={classes.likes} onClick={token ? action : () => {}}>
       <img src={favorited ? img_active : img} alt="like" />

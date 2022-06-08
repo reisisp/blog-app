@@ -9,7 +9,7 @@ import classes from './ArticlesPageForm.module.scss';
 
 const ArticlesPageForm = ({ token, articles, getArticles, currentPage }) => {
   useEffect(() => {
-    getArticles(currentPage, token);
+    getArticles(currentPage);
   }, [currentPage, token]);
 
   return (

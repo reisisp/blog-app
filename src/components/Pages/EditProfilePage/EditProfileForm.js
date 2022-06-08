@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 
 import * as profileActions from '../../../store/profileReducer/profileActions';
 import { NewInputWithValidation } from '../../UI/Inputs/NewInput/NewInput';
@@ -16,17 +15,18 @@ const EditProfileForm = ({
   profileEditSuccess,
   profilePrepareEditPage,
 }) => {
-  const history = useHistory();
   const [user, setUser] = useState({ username: '', email: '', password: '', image: '' });
   const editUser = (e) => {
     setUser({ ...user, [e.target.id]: e.target.value });
   };
   const saveEdited = () => {
-    saveEditedUser(token, user);
+    const data = { username: user.username, email: user.email };
+    if (user.password.length) data.password = user.password;
+    if (user.image.length) data.image = user.image;
+    saveEditedUser(data);
     setUser({ ...user, password: '' });
   };
   useEffect(() => {
-    if (localStorage.getItem('token') === null) history.push('/');
     setUser({ ...user, ...storeUser });
     profilePrepareEditPage();
   }, [token]);

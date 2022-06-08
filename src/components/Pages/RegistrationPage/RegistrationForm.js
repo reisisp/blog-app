@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import * as profileActions from '../../../store/profileReducer/profileActions';
 import { CustomCheckBox } from '../../UI/Inputs/CustomCheckBox/CustomCheckBox';
@@ -9,8 +9,7 @@ import { Btn } from '../../UI/Btn/Btn';
 
 import classes from './RegistrationForm.module.scss';
 
-const RegistrationForm = ({ token, validationErrors, preparePage, registerNewUser }) => {
-  const history = useHistory();
+const RegistrationForm = ({ validationErrors, preparePage, registerNewUser }) => {
   const [user, setUser] = useState({ username: '', email: '', password: '', repeatPwd: '', agreementCheckbox: false });
   const editUser = (e) => {
     setUser({ ...user, [e.target.id]: e.target.value });
@@ -22,9 +21,6 @@ const RegistrationForm = ({ token, validationErrors, preparePage, registerNewUse
     registerNewUser(user);
     setUser({ ...user, password: '', repeatPwd: '' });
   };
-  useEffect(() => {
-    if (token) history.push('/');
-  }, [token]);
   useEffect(() => {
     preparePage();
   }, []);
