@@ -26,7 +26,9 @@ export default class BlogService {
   }
 
   getArticlesByPage(page, token = '') {
-    return this.getRes(`/articles?offset=${page}`, {}, 'GET', token);
+    const offset = page * 10;
+    const limit = 10;
+    return this.getRes(`/articles?limit=${limit}&offset=${offset}`, {}, 'GET', token);
   }
 
   getArticleBySlug(slug, token = '') {

@@ -1,6 +1,7 @@
 import { ARTICLES_SAVE_TOTAL_PAGES, SHOW_CONNECTION_ERROR, SHOW_LOADER } from '../reduxTypes';
 
 export function saveTotalPages(pages) {
+  console.log(pages);
   return { type: ARTICLES_SAVE_TOTAL_PAGES, payload: pages };
 }
 

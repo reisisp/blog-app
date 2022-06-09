@@ -18,10 +18,8 @@ const ArticlesPageForm = ({ token, currentPage, showLoader, showConnectionError,
     service
       .getArticlesByPage(page, token)
       .then((res) => {
-        console.log(res.articles);
-        saveTotalPages(res.articlesCount);
+        saveTotalPages(Math.floor(res.articlesCount / 10));
         setArticles(() => [...res.articles]);
-        // saveArticles(res.articles);
         showLoader(false);
       })
       .catch(() => {
