@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
 
-import * as articlesActions from '../../store/articlesReducer/articlesActions';
 import { Btn } from '../UI/Btn/Btn';
 import { NewTagInput } from '../UI/Inputs/NewTagInput/NewTagInput';
 import { NewInputWithValidation } from '../UI/Inputs/NewInput/NewInput';
@@ -9,9 +7,11 @@ import { NewArticleTextareaValidation } from '../UI/Inputs/NewArticleTextarea/Ne
 
 import classes from './CreateEditArticlePageForm.module.scss';
 
-const CreateEditArticlePageForm = ({ edit, formAction, currentSlug, storeArticle, validationErr }) => {
+export const CreateEditArticlePageForm = ({ formAction, currentArticle }) => {
   const [article, setArticle] = useState({ title: '', body: '', description: '', tagList: [] });
+  const [validationErr, setValidationErr] = useState({});
   const [tag, setTag] = useState('');
+  const isEdit = Object.keys(currentArticle).length;
   const editArticle = (e) => {
     setArticle({ ...article, [e.target.id]: e.target.value });
   };
@@ -31,12 +31,15 @@ const CreateEditArticlePageForm = ({ edit, formAction, currentSlug, storeArticle
       tagList: [...article.tagList.slice(0, +index), ...article.tagList.slice(+index + 1, article.tagList.length)],
     });
   }
+  const setError = (err) => {
+    setValidationErr((validationErr) => ({ ...validationErr, ...err }));
+  };
   useEffect(() => {
-    if (edit) setArticle({ ...article, ...storeArticle });
-  }, [storeArticle]);
+    setArticle({ ...article, ...currentArticle });
+  }, [isEdit]);
   return (
     <section className={classes.newArticle}>
-      <h2 className={classes.newArticle__heading}>{edit ? 'Edit article' : 'Create new article'}</h2>
+      <h2 className={classes.newArticle__heading}>{isEdit ? 'Edit article' : 'Create new article'}</h2>
       <div className={classes.newArticle__form}>
         <div className={classes.form__inputs}>
           <NewInputWithValidation
@@ -94,7 +97,7 @@ const CreateEditArticlePageForm = ({ edit, formAction, currentSlug, storeArticle
           </div>
         </div>
         <div>
-          <Btn confirmBtn onClick={() => (!edit ? formAction(article) : formAction(currentSlug, article))}>
+          <Btn confirmBtn onClick={() => formAction(article, setError)}>
             Send
           </Btn>
         </div>
@@ -102,13 +105,3 @@ const CreateEditArticlePageForm = ({ edit, formAction, currentSlug, storeArticle
     </section>
   );
 };
-
-function mapStateToProps({ articlesReducer }) {
-  return {
-    storeArticle: articlesReducer.currentArtcile,
-    validationErr: articlesReducer.newArticleValidationErrors,
-    newTag: articlesReducer.newArticleTag,
-  };
-}
-
-export default connect(mapStateToProps, articlesActions)(CreateEditArticlePageForm);

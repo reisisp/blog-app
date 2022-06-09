@@ -1,88 +1,92 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useLocation } from 'react-router-dom/cjs/react-router-dom.min';
-import { bindActionCreators } from 'redux';
 
 import * as articlesActions from '../../../store/articlesReducer/articlesActions';
-import * as modalWindowActions from '../../../store/modalWindowReducer/modalWindowActions';
 import { MarkdownBody } from '../../MarkdownBody/MarkdownBody';
 import { Btn } from '../../UI/Btn/Btn';
 import { ApplyModal } from '../../ApplyModal/ApplyModal';
 import { ArticleCardForm } from '../../ArticleCard/ArticleCardForm';
+import BlogService from '../../../service/service-blog';
 
 import classes from './ArticlePageForm.module.scss';
 
-const ArticlePageForm = ({
-  currentArticle,
-  token,
-  modalVisible,
-  currentUser,
-  deleteSuccess,
-  deleteArticle,
-  getArticleBySlug,
-  deleteConfirmation,
-  setModalVisible,
-}) => {
+const service = new BlogService();
+
+const ArticlePageForm = ({ token, currentUser, showConnectionError, showLoader }) => {
+  const [article, setArticle] = useState({});
+  const [modal, setModal] = useState(false);
   const history = useHistory();
   const location = useLocation();
   const locationArr = location.pathname.split('/');
   const currentSlug = locationArr[locationArr.length - 1];
-  useEffect(() => {
-    if (deleteSuccess) {
-      history.push('/');
-      deleteConfirmation(false);
-    }
-  }, [deleteSuccess]);
+
+  function getArticle(slug) {
+    showLoader();
+    const token = localStorage.getItem('token') === null ? '' : localStorage.getItem('token');
+    service
+      .getArticleBySlug(slug, token)
+      .then((res) => {
+        setArticle(res.article);
+        showLoader(false);
+      })
+      .catch(() => {
+        showConnectionError();
+        showLoader(false);
+      });
+  }
+
+  function deleteArticle(slug) {
+    showLoader();
+    const token = localStorage.getItem('token') === null ? '' : localStorage.getItem('token');
+    service
+      .deleteArticle(slug, token)
+      .then(() => {
+        history.push('/');
+        showLoader(false);
+      })
+      .catch(() => {
+        showConnectionError();
+        showLoader(false);
+      });
+  }
 
   useEffect(() => {
-    getArticleBySlug(currentSlug);
-    setModalVisible(false);
+    getArticle(currentSlug);
   }, [token]);
   return (
     <article className={classes.article}>
-      {currentArticle.author ? (
+      {article.author ? (
         <>
-          <ArticleCardForm article={currentArticle} />
-          {currentUser === currentArticle.author.username && (
+          <ArticleCardForm article={article} />
+          {currentUser === article.author.username && (
             <>
               <div className={classes.article__btns}>
-                <Btn deleteArticlebtn onClick={() => setModalVisible(true)}>
+                <Btn deleteArticlebtn onClick={() => setModal(true)}>
                   Delete
                 </Btn>
                 <Btn editArticlebtn to={`/articles/${currentSlug}/edit`}>
                   Edit
                 </Btn>
-                {modalVisible && (
-                  <ApplyModal
-                    actionConfirm={() => deleteArticle(currentSlug)}
-                    actionClose={() => setModalVisible(false)}
-                  />
+                {modal && (
+                  <ApplyModal actionConfirm={() => deleteArticle(currentSlug)} actionClose={() => setModal(false)} />
                 )}
               </div>
             </>
           )}
-          <MarkdownBody text={currentArticle.body} />
+          <MarkdownBody text={article.body} />
         </>
       ) : null}
     </article>
   );
 };
 
-function mapStateToProps({ articlesReducer, profileReducer, modalWindowReducer }) {
+function mapStateToProps({ profileReducer }) {
   return {
-    currentArticle: articlesReducer.currentArtcile,
     currentUser: profileReducer.user.username,
     token: profileReducer.token,
-    modalVisible: modalWindowReducer.modalVisible,
-    deleteSuccess: articlesReducer.deleteSuccess,
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  const { setModalVisible } = bindActionCreators(modalWindowActions, dispatch);
-  const { deleteArticle, getArticleBySlug, deleteConfirmation } = bindActionCreators(articlesActions, dispatch);
-  return { setModalVisible, deleteArticle, getArticleBySlug, deleteConfirmation };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ArticlePageForm);
+export default connect(mapStateToProps, articlesActions)(ArticlePageForm);
