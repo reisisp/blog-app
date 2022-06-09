@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
 import * as articlesActions from '../../../store/articlesReducer/articlesActions';
@@ -13,6 +13,11 @@ const service = new BlogService();
 const Likes = ({ slug, favoritesCount, favorited, token }) => {
   let [count, setCount] = useState(favoritesCount);
   let [isFavorite, setIsFavorite] = useState(favorited);
+  useEffect(() => {
+    if (!token) {
+      setIsFavorite(false);
+    }
+  }, [token]);
   function setFavorite(slug) {
     const token = localStorage.getItem('token') === null ? '' : localStorage.getItem('token');
     service
