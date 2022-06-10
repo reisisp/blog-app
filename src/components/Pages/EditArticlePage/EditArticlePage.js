@@ -42,9 +42,8 @@ const EditArticlePage = withContainer(
         } else {
           checkData(article, setError);
           showLoader();
-          const token = localStorage.getItem('token') === null ? '' : localStorage.getItem('token');
           service
-            .updateArticle(currentSlug, article, token)
+            .updateArticle(currentSlug, article)
             .then(() => {
               history.push(`/articles/${currentSlug}`);
               showLoader(false);

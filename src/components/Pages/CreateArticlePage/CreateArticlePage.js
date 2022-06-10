@@ -21,9 +21,8 @@ const CreateArticlePage = withContainer(
         } else {
           checkData(article, setError);
           showLoader();
-          const token = localStorage.getItem('token') === null ? '' : localStorage.getItem('token');
           service
-            .createArticle(article, token)
+            .createArticle(article)
             .then((res) => {
               history.push(`/articles/${res.article.slug}`);
               showLoader(false);

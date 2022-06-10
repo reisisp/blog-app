@@ -19,9 +19,8 @@ const Likes = ({ slug, favoritesCount, favorited, token }) => {
     }
   }, [token]);
   function setFavorite(slug) {
-    const token = localStorage.getItem('token') === null ? '' : localStorage.getItem('token');
     service
-      .setFavorite(slug, token)
+      .setFavorite(slug)
       .then(() => {
         setCount((count += 1));
         setIsFavorite(true);
@@ -31,9 +30,8 @@ const Likes = ({ slug, favoritesCount, favorited, token }) => {
       });
   }
   function removeFavorite(slug) {
-    const token = localStorage.getItem('token') === null ? '' : localStorage.getItem('token');
     service
-      .removeFavorite(slug, token)
+      .removeFavorite(slug)
       .then(() => {
         setCount((count -= 1));
         setIsFavorite(false);

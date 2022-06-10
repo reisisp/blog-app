@@ -73,7 +73,6 @@ const LoginForm = ({ validationErrors, authUser, preparePage }) => {
 
 function mapStateToProps({ profileReducer }) {
   return {
-    token: profileReducer.token,
     validationErrors: profileReducer.validationErrors,
   };
 }

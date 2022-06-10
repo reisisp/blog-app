@@ -101,7 +101,6 @@ const RegistrationForm = ({ validationErrors, preparePage, registerNewUser }) =>
 
 function mapStateToProps({ profileReducer }) {
   return {
-    token: profileReducer.token,
     validationErrors: profileReducer.validationErrors,
   };
 }

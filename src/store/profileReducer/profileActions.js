@@ -96,9 +96,8 @@ export function saveEditedUser(user) {
     } else {
       dispatch(checkProfileEditData(user));
       dispatch(showLoader());
-      const token = localStorage.getItem('token') === null ? '' : localStorage.getItem('token');
       service
-        .updateUser(token, user)
+        .updateUser(user)
         .then((res) => {
           if (res.errors) {
             dispatch(
@@ -125,9 +124,8 @@ export function saveEditedUser(user) {
 export function profileGetUserByToken() {
   return (dispatch) => {
     dispatch(showLoader());
-    const token = localStorage.getItem('token') === null ? '' : localStorage.getItem('token');
     service
-      .getCurrentUser(token)
+      .getCurrentUser()
       .then((res) => {
         if (res.errors) {
           dispatch(showConnectionError());

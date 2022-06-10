@@ -14,9 +14,8 @@ const ArticlesPageForm = ({ token, currentPage, showLoader, showConnectionError,
   const [articles, setArticles] = useState([]);
   function getArticles(page) {
     showLoader();
-    const token = localStorage.getItem('token') === null ? '' : localStorage.getItem('token');
     service
-      .getArticlesByPage(page, token)
+      .getArticlesByPage(page)
       .then((res) => {
         saveTotalPages(Math.floor(res.articlesCount / 10));
         setArticles(() => [...res.articles]);

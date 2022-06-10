@@ -24,9 +24,8 @@ const ArticlePageForm = ({ token, currentUser, showConnectionError, showLoader }
 
   function getArticle(slug) {
     showLoader();
-    const token = localStorage.getItem('token') === null ? '' : localStorage.getItem('token');
     service
-      .getArticleBySlug(slug, token)
+      .getArticleBySlug(slug)
       .then((res) => {
         setArticle(res.article);
         showLoader(false);
@@ -39,9 +38,8 @@ const ArticlePageForm = ({ token, currentUser, showConnectionError, showLoader }
 
   function deleteArticle(slug) {
     showLoader();
-    const token = localStorage.getItem('token') === null ? '' : localStorage.getItem('token');
     service
-      .deleteArticle(slug, token)
+      .deleteArticle(slug)
       .then(() => {
         history.push('/');
         showLoader(false);
